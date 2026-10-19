@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado Habbo RP - Calculadora de Turnos</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #121214;
+            color: #e1e1e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator-container {
+            background-color: #202024;
+            border: 2px solid #29292e;
+            border-radius: 12px;
+            width: 360px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 6px;
+            color: #f75a68;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            text-align: center;
+            color: #a8a8b3;
+            margin-bottom: 20px;
+        }
+
+        .display-group {
+            background-color: #121214;
+            border: 1px solid #323238;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .display-label {
+            font-size: 0.75rem;
+            color: #a8a8b3;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .display-value {
+            font-size: 1.8rem;
+            text-align: right;
+            color: #00b37e;
+            font-weight: bold;
+            min-height: 40px;
+            word-break: break-all;
+        }
+
+        .goal-info {
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            background: #29292e;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .goal-info span {
+            color: #f75a68;
+            font-weight: bold;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        button.key {
+            background-color: #29292e;
+            border: none;
+            border-radius: 6px;
+            color: #e1e1e6;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 14px 0;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button.key:hover {
+            background-color: #323238;
+        }
+
+        button.key:active {
+            transform: scale(0.95);
+        }
+
+        button.key.action-c {
+            background-color: rgba(247, 90, 104, 0.15);
+            color: #f75a68;
+        }
+
+        button.key.action-c:hover {
+            background-color: rgba(247, 90, 104, 0.25);
+        }
+
+        button.key.action-ok {
+            grid-column: span 3;
+            background-color: #00b37e;
+            color: #white;
+        }
+
+        button.key.action-ok:hover {
+            background-color: #00875f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator-container">
+        <h1>Mercado Habbo RP</h1>
+        <div class="subtitle">Calculadora de Turnos</div>
+
+        <div class="goal-info">
+            Meta da Semana: <span id="metaText">15 turnos</span>
+        </div>
+
+        <div class="display-group">
+            <div class="display-label">Turnos Atuais / Restantes</div>
+            <div class="display-value" id="display">0</div>
+        </div>
+
+        <div class="keypad">
+            <button class="key" onclick="appendNumber('7')">7</button>
+            <button class="key" onclick="appendNumber('8')">8</button>
+            <button class="key" onclick="appendNumber('9')">9</button>
+            
+            <button class="key" onclick="appendNumber('4')">4</button>
+            <button class="key" onclick="appendNumber('5')">5</button>
+            <button class="key" onclick="appendNumber('6')">6</button>
+            
+            <button class="key" onclick="appendNumber('1')">1</button>
+            <button class="key" onclick="appendNumber('2')">2</button>
+            <button class="key" onclick="appendNumber('3')">3</button>
+            
+            <button class="key" onclick="appendNumber('0')">0</button>
+            <button class="key action-c" onclick="clearDisplay()">C</button>
+            <button class="key" onclick="deleteNumber()">⌫</button>
+
+            <button class="key action-ok" onclick="calculateRemaining()">Calcular o que Falta</button>
+        </div>
+    </div>
+
+    <script>
+        const metaTurnos = 15; // Defina aqui a meta padrão exigida pela corporação
+        let currentInput = "0";
+        const display = document.getElementById("display");
+
+        function updateDisplay() {
+            display.innerText = currentInput;
+        }
+
+        function appendNumber(num) {
+            if (currentInput === "0") {
+                currentInput = num;
+            } else {
+                currentInput += num;
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = "0";
+            updateDisplay();
+        }
+
+        function deleteNumber() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = "0";
+            }
+            updateDisplay();
+        }
+
+        function calculateRemaining() {
+            let atual = parseInt(currentInput);
+            let faltando = metaTurnos - atual;
+
+            if (faltando > 0) {
+                display.innerText = `Faltam ${faltando}`;
+            } else {
+                display.innerText = "Meta Batida! 🎉";
+            }
+        }
+    </script>
+
+</body>
+</html>
